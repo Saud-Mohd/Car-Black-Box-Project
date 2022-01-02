@@ -1,0 +1,121 @@
+Version 4.0 HI-TECH Software Intermediate Code
+"18 ./ds1307.h
+[; ;./ds1307.h: 18: unsigned char read_ds1307(unsigned char address1);
+[v _read_ds1307 `(uc ~T0 @X0 0 ef1`uc ]
+"17
+[; ;./ds1307.h: 17: void write_ds1307(unsigned char address1, unsigned char data);
+[v _write_ds1307 `(v ~T0 @X0 0 ef2`uc`uc ]
+"6 ./i2c.h
+[; ;./i2c.h: 6: void i2c_start(void);
+[v _i2c_start `(v ~T0 @X0 0 ef ]
+"10
+[; ;./i2c.h: 10: unsigned char i2c_write(unsigned char i2c_write_data);
+[v _i2c_write `(uc ~T0 @X0 0 ef1`uc ]
+"8
+[; ;./i2c.h: 8: void i2c_stop(void);
+[v _i2c_stop `(v ~T0 @X0 0 ef ]
+"7
+[; ;./i2c.h: 7: void i2c_rep_start(void);
+[v _i2c_rep_start `(v ~T0 @X0 0 ef ]
+"9
+[; ;./i2c.h: 9: int i2c_read(unsigned char ack);
+[v _i2c_read `(i ~T0 @X0 0 ef1`uc ]
+"11 ds1307.c
+[; ;ds1307.c: 11: void init_ds1307(void)
+[v _init_ds1307 `(v ~T0 @X0 1 ef ]
+"12
+[; ;ds1307.c: 12: {
+{
+[e :U _init_ds1307 ]
+[f ]
+"13
+[; ;ds1307.c: 13:  unsigned char dummy;
+[v _dummy `uc ~T0 @X0 1 a ]
+"15
+[; ;ds1307.c: 15:  dummy = read_ds1307(0x00);
+[e = _dummy ( _read_ds1307 (1 -> -> 0 `i `uc ]
+"17
+[; ;ds1307.c: 17:  write_ds1307(0x00, dummy & 0x7F);
+[e ( _write_ds1307 (2 , -> -> 0 `i `uc -> & -> _dummy `i -> 127 `i `uc ]
+"19
+[; ;ds1307.c: 19: }
+[e :UE 1 ]
+}
+"21
+[; ;ds1307.c: 21: void write_ds1307(unsigned char address, unsigned char data)
+[v _write_ds1307 `(v ~T0 @X0 1 ef2`uc`uc ]
+"22
+[; ;ds1307.c: 22: {
+{
+[e :U _write_ds1307 ]
+"21
+[; ;ds1307.c: 21: void write_ds1307(unsigned char address, unsigned char data)
+[v _address `uc ~T0 @X0 1 r1 ]
+[v _data `uc ~T0 @X0 1 r2 ]
+"22
+[; ;ds1307.c: 22: {
+[f ]
+"23
+[; ;ds1307.c: 23:  i2c_start();
+[e ( _i2c_start ..  ]
+"24
+[; ;ds1307.c: 24:  i2c_write(0xD0);
+[e ( _i2c_write (1 -> -> 208 `i `uc ]
+"25
+[; ;ds1307.c: 25:  i2c_write(address);
+[e ( _i2c_write (1 _address ]
+"26
+[; ;ds1307.c: 26:  i2c_write(data);
+[e ( _i2c_write (1 _data ]
+"27
+[; ;ds1307.c: 27:  i2c_stop();
+[e ( _i2c_stop ..  ]
+"28
+[; ;ds1307.c: 28: }
+[e :UE 2 ]
+}
+"30
+[; ;ds1307.c: 30: unsigned char read_ds1307(unsigned char address)
+[v _read_ds1307 `(uc ~T0 @X0 1 ef1`uc ]
+"31
+[; ;ds1307.c: 31: {
+{
+[e :U _read_ds1307 ]
+"30
+[; ;ds1307.c: 30: unsigned char read_ds1307(unsigned char address)
+[v _address `uc ~T0 @X0 1 r1 ]
+"31
+[; ;ds1307.c: 31: {
+[f ]
+"32
+[; ;ds1307.c: 32:  unsigned char data;
+[v _data `uc ~T0 @X0 1 a ]
+"34
+[; ;ds1307.c: 34:  i2c_start();
+[e ( _i2c_start ..  ]
+"35
+[; ;ds1307.c: 35:  i2c_write(0xD0);
+[e ( _i2c_write (1 -> -> 208 `i `uc ]
+"36
+[; ;ds1307.c: 36:  i2c_write(address);
+[e ( _i2c_write (1 _address ]
+"37
+[; ;ds1307.c: 37:  i2c_rep_start();
+[e ( _i2c_rep_start ..  ]
+"38
+[; ;ds1307.c: 38:  i2c_write(0xD1);
+[e ( _i2c_write (1 -> -> 209 `i `uc ]
+"39
+[; ;ds1307.c: 39:  data = i2c_read(0);
+[e = _data -> ( _i2c_read (1 -> -> 0 `i `uc `uc ]
+"40
+[; ;ds1307.c: 40:  i2c_stop();
+[e ( _i2c_stop ..  ]
+"42
+[; ;ds1307.c: 42:  return data;
+[e ) _data ]
+[e $UE 3  ]
+"43
+[; ;ds1307.c: 43: }
+[e :UE 3 ]
+}
